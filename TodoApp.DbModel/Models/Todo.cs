@@ -19,6 +19,6 @@ namespace TodoApp.DbModel.Models
         public DateTime UpdatedDateUtcTime { get; set; }
         public bool IsRead { get; set; }
         public bool IsArchived { get; set; }
-        public virtual User User { get; set; }
+        public virtual User Creator { get; set; }
     }
 }

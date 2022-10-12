@@ -13,6 +13,8 @@ namespace TodoApp.ModelView.Request
         public string Title { get; set; }
         [DefaultValue("")]
         public string Image { get; set; }
+        public string ImageString { get; set; }
         public string Content { get; set; }
+        public bool IsRead { get; set; }
     }
 }

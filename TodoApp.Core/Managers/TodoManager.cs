@@ -9,6 +9,7 @@ using TodoApp.DbModel;
 using TodoApp.DbModel.Models;
 using TodoApp.ModelView.ModelView;
 using TodoApp.ModelView.Request;
+using TodoApp.Common.Helper;
 
 namespace TodoApp.Core.Managers
 {
@@ -25,7 +26,7 @@ namespace TodoApp.Core.Managers
         public TodoModelView GetTodo(int id)
         {
             var res = _tododbContext.Todos
-                          .Include("User")
+                          .Include("Creator")
                           .FirstOrDefault(a => a.Id == id)
                       ?? throw new ServiceValidationException("Invalid todo id received");
 
@@ -89,15 +90,30 @@ namespace TodoApp.Core.Managers
         public TodoModelView PutTodo(UserModelView currentUser, TodoRequest todoRequest)
         {
             var assignedId = _tododbContext.Todos.FirstOrDefault(a=>a.Id==todoRequest.Id);
-            if (assignedId.AssignedId != currentUser.Id)
+
+            if (!currentUser.IsAdmin && assignedId.AssignedId != currentUser.Id)
             {
                 throw new ServiceValidationException("You dont have permission to edit this todo");
             }
+
             var todo = _tododbContext.Todos
                    .FirstOrDefault(a => a.Id == todoRequest.Id)
                ?? throw new ServiceValidationException("Invalid todo id received");
+
+            var url = "";
+
+            if (!string.IsNullOrWhiteSpace(todoRequest.ImageString))
+            {
+                url = Helper.SaveImage(todoRequest.ImageString, "todoimages");
+            }
             todo.Title = todoRequest.Title;
             todo.Content = todoRequest.Content;
+            todo.IsRead = todoRequest.IsRead;
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                var baseUrl = "https://localhost:44380";
+                todo.Image = $@"{baseUrl}/api/v1/user/fileretrive/todopic?filename={url}";
+            }
 
             _tododbContext.SaveChanges();
             return _mapper.Map<TodoModelView>(todo);

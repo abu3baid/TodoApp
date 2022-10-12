@@ -28,7 +28,7 @@ namespace TodoApp.Common.Helper
                 }
 
                 base64img = base64Array[1];
-                var fileName = $"{Guid.NewGuid()}{"Logo.png"}".Replace("-", string.Empty);
+                var fileName = $"{Guid.NewGuid()}{".png"}".Replace("-", string.Empty);
                 
                 if (!string.IsNullOrWhiteSpace(folderPath))
                 {

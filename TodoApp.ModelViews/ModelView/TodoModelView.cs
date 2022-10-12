@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TodoApp.ModelView.ModelView
 {
@@ -18,7 +14,5 @@ namespace TodoApp.ModelView.ModelView
         public int CreatorId { get; set; }
         public int AssignedId { get; set; }
         public DateTime CreatedDateUtcTime { get; set; }
-        public bool IsRead { get; set; }
-        public List<UserModelView> User { get; set; }
     }
 }

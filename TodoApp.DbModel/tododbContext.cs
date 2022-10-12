@@ -65,12 +65,12 @@ namespace TodoApp.DbModel
 
                 entity.Property(e => e.Title).IsRequired();
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.Creator)
                     .WithMany(p => p.Todos)
                     .HasForeignKey(d => d.CreatorId)
                     .HasConstraintName("fk_user_todo");
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.Creator)
                     .WithMany(p => p.Todos)
                     .HasForeignKey(d => d.AssignedId)
                     .HasConstraintName("fk_user_assigned");
