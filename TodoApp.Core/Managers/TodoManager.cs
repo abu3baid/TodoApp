@@ -121,6 +121,7 @@ namespace TodoApp.Core.Managers
 
         public TodoModelView AssignTodo(UserModelView currentUser, TodoAssign todoAssign)
         {
+            _tododbContext.IgnoreFilter = true;
             var todo = _tododbContext.Todos
                            .FirstOrDefault(a => a.Id == todoAssign.Id)
                        ?? throw new ServiceValidationException("Invalid todo id received");
@@ -132,6 +133,7 @@ namespace TodoApp.Core.Managers
 
         public void ArchiveTodo(UserModelView currentUser, int id)
         {
+            _tododbContext.IgnoreFilter = true;
             var data = _tododbContext.Todos
                            .FirstOrDefault(a => a.Id == id)
                        ?? throw new ServiceValidationException("Invalid todo id received");
