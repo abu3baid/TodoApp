@@ -21,6 +21,26 @@ namespace TodoApp.API.Controllers
             _userManager = userManager;
         }
 
+        [Route("api/user/getall")]
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [TodoAppAuthorize()]
+        public IActionResult GetUsers(int page = 1, int pageSize = 10, string sortColumn = "", string sortDirection = "ascending", string searchText = "")
+        {
+            var result = _userManager.GetUsers(page, pageSize, sortColumn, sortDirection, searchText);
+            return Ok(result);
+        }
+
+        [Route("api/user/get/{id}")]
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [TodoAppAuthorize()]
+        public IActionResult GetUser(int id)
+        {
+            var result = _userManager.GetUser(id);
+            return Ok(result);
+        }
+
         [Route("api/user/register")]
         [HttpPost]
         [AllowAnonymous]

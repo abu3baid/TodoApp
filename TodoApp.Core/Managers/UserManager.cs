@@ -4,8 +4,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TodoApp.Common.Extceptions;
+using TodoApp.Common.Extensions;
 using TodoApp.Common.Helper;
 using TodoApp.Core.Managers.Interfaces;
 using TodoApp.DbModel;
@@ -25,6 +27,55 @@ namespace TodoApp.Core.Managers
         }
 
         #region public
+
+        public UserModelView GetUser(int id)
+        {
+            var res = _tododbContext.Users
+                          .FirstOrDefault(a => a.Id == id)
+                      ?? throw new ServiceValidationException("Invalid user id received");
+
+            return _mapper.Map<UserModelView>(res);
+        }
+
+        public UserResponseView GetUsers(int page = 1, int pageSize = 10, string sortColumn = "", string sortDirection = "ascending", string searchText = "")
+        {
+            var queryRes = _tododbContext.Users
+                                        .Where(a => string.IsNullOrWhiteSpace(searchText)
+                                                    || (a.FirstName.Contains(searchText)
+                                                        || a.LastName.Contains(searchText)));
+
+            if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.Equals("ascending", StringComparison.InvariantCultureIgnoreCase))
+            {
+                queryRes = queryRes.OrderBy(sortColumn);
+            }
+            else if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.Equals("descending", StringComparison.InvariantCultureIgnoreCase))
+            {
+                queryRes = queryRes.OrderByDescending(sortColumn);
+            }
+
+            var res = queryRes.GetPaged(page, pageSize);
+
+            var todoIds = res.Data
+                             .Select(a => a.Id)
+                             .Distinct()
+                             .ToList();
+
+            var todos = _tododbContext.Todos
+                                     .Where(a => todoIds.Contains(a.AssignedId))
+                                     .ToDictionary(a => a.Id, x => _mapper.Map<TodoResultView>(x));
+
+            var data = new UserResponseView()
+            {
+                User = _mapper.Map<PagedResult<UserModelView>>(res),
+                Todo = todos
+            };
+
+            data.User.Sortable.Add("Email", "Email");
+            data.User.Sortable.Add("CreatedDate", "Created Date");
+
+            return data;
+        }
+
         public LoginUserResponseView Login(UserLoginView userReg)
         {
             var user = _tododbContext.Users.FirstOrDefault(a =>

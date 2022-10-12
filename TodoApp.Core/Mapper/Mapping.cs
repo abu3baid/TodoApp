@@ -12,8 +12,10 @@ namespace TodoApp.Core.Mapper
             CreateMap<User, UserModelView>().ReverseMap();
             CreateMap<User, LoginUserResponseView>().ReverseMap();
             CreateMap<User, UserResultView>().ReverseMap();
+            CreateMap<Todo, TodoResultView>().ReverseMap();
             CreateMap<Todo, TodoModelView>().ReverseMap();
             CreateMap<PagedResult<TodoModelView>, PagedResult<Todo>>().ReverseMap();
+            CreateMap<PagedResult<UserModelView>, PagedResult<User>>().ReverseMap();
             CreateMap<TodoModelView, UserModelView>().ReverseMap();
         }
     }

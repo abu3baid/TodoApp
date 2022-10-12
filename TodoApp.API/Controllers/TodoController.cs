@@ -20,15 +20,6 @@ namespace TodoApp.API.Controllers
             _logger = logger;
         }
 
-        [Route("api/todo/create")]
-        [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult CreateTodo(TodoRequest todoRequest)
-        {
-            var result = _todoManager.CreateTodo(LoggedInUser, todoRequest);
-            return Ok(result);
-        }
-
         [Route("api/todo/getall")]
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -44,6 +35,15 @@ namespace TodoApp.API.Controllers
         public IActionResult GetTodo(int id)
         {
             var result = _todoManager.GetTodo(id);
+            return Ok(result);
+        }
+
+        [Route("api/todo/create")]
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult CreateTodo(TodoRequest todoRequest)
+        {
+            var result = _todoManager.CreateTodo(LoggedInUser, todoRequest);
             return Ok(result);
         }
 
