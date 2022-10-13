@@ -23,7 +23,6 @@ namespace TodoApp.API.Controllers
 
         [Route("api/user/getall")]
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]
         public IActionResult GetUsers(int page = 1, int pageSize = 10, string sortColumn = "", string sortDirection = "ascending", string searchText = "")
         {
@@ -33,7 +32,6 @@ namespace TodoApp.API.Controllers
 
         [Route("api/user/get/{id}")]
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]
         public IActionResult GetUser(int id)
         {
@@ -81,7 +79,6 @@ namespace TodoApp.API.Controllers
 
         [Route("api/user/assignadmin/{id}")]
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]
         public IActionResult AssignAdmin(int id)
         {
@@ -91,7 +88,6 @@ namespace TodoApp.API.Controllers
 
         [Route("api/user/delete/{id}")]
         [HttpDelete]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]
         public IActionResult Delete(int id)
         {

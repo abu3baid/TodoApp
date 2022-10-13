@@ -67,7 +67,6 @@ namespace TodoApp.API.Controllers
 
         [Route("api/todo/assign")]
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]
         public IActionResult AssignTodo(TodoAssign todoAssign)
         {
@@ -86,7 +85,6 @@ namespace TodoApp.API.Controllers
 
         [Route("api/todo/delete/{id}")]
         [HttpDelete]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]
         public IActionResult ArchiveTodo(int id)
         {
