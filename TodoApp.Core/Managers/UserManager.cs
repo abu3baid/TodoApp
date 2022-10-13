@@ -98,6 +98,11 @@ namespace TodoApp.Core.Managers
                 throw new ServiceValidationException("User Already Exist");
             }
 
+            if(userReg.Password != userReg.ConfirmPassword)
+            {
+                throw new ServiceValidationException("Password doesn't match");
+            }
+
             var hashedPassword = HashPassword(userReg.Password);
 
             var user = _tododbContext.Users.Add(new User
