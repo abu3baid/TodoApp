@@ -16,5 +16,6 @@ namespace TodoApp.ModelView.ModelView
         public string Content { get; set; }
         public int CreatorId { get; set; }
         public int AssignedId { get; set; }
+        public bool IsRead { get; set; }
     }
 }

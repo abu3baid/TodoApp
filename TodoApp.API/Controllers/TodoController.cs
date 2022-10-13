@@ -29,6 +29,15 @@ namespace TodoApp.API.Controllers
             return Ok(result);
         }
 
+        [Route("api/todo/getisread")]
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult GetIsRead(int page = 1, int pageSize = 10, string sortColumn = "", string sortDirection = "ascending", string searchText = "")
+        {
+            var result = _todoManager.GetIsRead(page, pageSize, sortColumn, sortDirection, searchText);
+            return Ok(result);
+        }
+
         [Route("api/todo/get/{id}")]
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

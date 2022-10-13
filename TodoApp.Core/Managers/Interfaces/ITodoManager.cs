@@ -13,6 +13,7 @@ namespace TodoApp.Core.Managers.Interfaces
     {
         TodoResponseView GetTodos(int page = 1, int pageSize = 10, string sortColumn = "",
             string sortDirection = "ascending", string searchText = "");
+        TodoResponseView GetIsRead(int page = 1, int pageSize = 10, string sortColumn = "", string sortDirection = "ascending", string searchText = "");
 
         TodoModelView GetTodo(int id);
         TodoModelView CreateTodo(UserModelView currentUser, TodoRequest todoRequest);

@@ -8,6 +8,7 @@ namespace TodoApp.DbModel
     public partial class tododbContext : DbContext
     {
         public bool IgnoreFilter { get; set; }
+        public bool IgnoreIsRead { get; set; }
         public tododbContext()
         {
         }
@@ -129,7 +130,7 @@ namespace TodoApp.DbModel
             modelBuilder.Entity<User>().HasQueryFilter(a => !a.IsArchived || IgnoreFilter);
             modelBuilder.Entity<Todo>().HasQueryFilter(a => !a.IsArchived || IgnoreFilter);
 
-            modelBuilder.Entity<Todo>().HasQueryFilter(a => !a.IsRead || IgnoreFilter);
+            modelBuilder.Entity<Todo>().HasQueryFilter(a => !a.IsRead || IgnoreFilter || IgnoreIsRead);
 
             OnModelCreatingPartial(modelBuilder);
         }

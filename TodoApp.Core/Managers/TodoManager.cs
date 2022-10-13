@@ -72,6 +72,47 @@ namespace TodoApp.Core.Managers
             return data;
         }
 
+        public TodoResponseView GetIsRead(int page = 1, int pageSize = 10, string sortColumn = "", string sortDirection = "ascending", string searchText = "")
+        {
+            _tododbContext.IgnoreIsRead = true;
+
+            var isRead = _tododbContext.Todos.Where(a => a.IsRead == true);
+            var queryRes = isRead.Where(a => string.IsNullOrWhiteSpace(searchText)
+                                                    || (a.Title.Contains(searchText)
+                                                        || a.Content.Contains(searchText)));
+
+            if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.Equals("ascending", StringComparison.InvariantCultureIgnoreCase))
+            {
+                queryRes = queryRes.OrderBy(sortColumn);
+            }
+            else if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.Equals("descending", StringComparison.InvariantCultureIgnoreCase))
+            {
+                queryRes = queryRes.OrderByDescending(sortColumn);
+            }
+
+            var res = queryRes.GetPaged(page, pageSize);
+
+            var userIds = res.Data
+                             .Select(a => a.CreatorId)
+                             .Distinct()
+                             .ToList();
+
+            var users = _tododbContext.Users
+                                     .Where(a => userIds.Contains(a.Id))
+                                     .ToDictionary(a => a.Id, x => _mapper.Map<UserResultView>(x));
+
+            var data = new TodoResponseView()
+            {
+                Todo = _mapper.Map<PagedResult<TodoModelView>>(res),
+                User = users
+            };
+
+            data.Todo.Sortable.Add("Title", "Title");
+            data.Todo.Sortable.Add("CreatedDate", "Created Date");
+
+            return data;
+        }
+
         public TodoModelView CreateTodo(UserModelView currentUser, TodoRequest todoRequest)
         {
             var todo = _tododbContext.Todos.Add(new Todo
@@ -108,7 +149,6 @@ namespace TodoApp.Core.Managers
             }
             todo.Title = todoRequest.Title;
             todo.Content = todoRequest.Content;
-            todo.IsRead = todoRequest.IsRead;
             if (!string.IsNullOrWhiteSpace(url))
             {
                 var baseUrl = "https://localhost:44380";
