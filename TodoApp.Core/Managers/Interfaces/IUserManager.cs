@@ -15,6 +15,7 @@ namespace TodoApp.Core.Managers.Interfaces
         UserModelView UpdateProfile(UserModelView currentUser, UserModelView request);
         LoginUserResponseView Login(UserLoginView userReg);
         LoginUserResponseView SignUp(UserRegisterView userReg);
+        void AssignAdmin(int id);
         void DeleteUser(UserModelView currentUser, int id);
     }
 }

@@ -66,6 +66,15 @@ namespace TodoApp.API.Controllers
             return Ok(result);
         }
 
+        [Route("api/todo/isread/{id}")]
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult ChangeIsRead(int id)
+        {
+            _todoManager.ChangeIsRead(LoggedInUser, id);
+            return Ok();
+        }
+
         [Route("api/todo/delete/{id}")]
         [HttpDelete]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

@@ -143,6 +143,15 @@ namespace TodoApp.Core.Managers
             return _mapper.Map<UserModelView>(user);
         }
 
+        public void AssignAdmin(int id)
+        {
+            var user = _tododbContext.Users.FirstOrDefault(a => a.Id == id)
+                       ?? throw new ServiceValidationException("User not found");
+
+            user.IsAdmin = true;
+            _tododbContext.SaveChanges();
+        }
+
         public void DeleteUser(UserModelView currentUser, int id)
         {
             if (currentUser.Id == id)

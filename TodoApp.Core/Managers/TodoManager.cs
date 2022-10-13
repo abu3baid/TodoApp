@@ -131,6 +131,21 @@ namespace TodoApp.Core.Managers
             return _mapper.Map<TodoModelView>(todo);
         }
 
+        public void ChangeIsRead(UserModelView currentUser, int id)
+        {
+            var assignedId = _tododbContext.Todos.FirstOrDefault(a => a.Id == id);
+            if (!currentUser.IsAdmin && assignedId.AssignedId != currentUser.Id)
+            {
+                throw new ServiceValidationException("You dont have permission to edit this todo");
+            }
+            var data = _tododbContext.Todos
+                           .FirstOrDefault(a => a.Id == id)
+                       ?? throw new ServiceValidationException("Invalid todo id received");
+            data.IsRead = true;
+
+            _tododbContext.SaveChanges();
+        }
+
         public void ArchiveTodo(UserModelView currentUser, int id)
         {
             _tododbContext.IgnoreFilter = true;

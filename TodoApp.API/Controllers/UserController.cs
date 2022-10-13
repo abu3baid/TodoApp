@@ -78,8 +78,18 @@ namespace TodoApp.API.Controllers
             var user = _userManager.UpdateProfile(LoggedInUser, request);
             return Ok(user);
         }
-        
-        [Route("api/user/{id}")]
+
+        [Route("api/user/assignadmin/{id}")]
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [TodoAppAuthorize()]
+        public IActionResult AssignAdmin(int id)
+        {
+            _userManager.AssignAdmin(id);
+            return Ok();
+        }
+
+        [Route("api/user/delete/{id}")]
         [HttpDelete]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [TodoAppAuthorize()]

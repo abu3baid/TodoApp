@@ -18,6 +18,7 @@ namespace TodoApp.Core.Managers.Interfaces
         TodoModelView CreateTodo(UserModelView currentUser, TodoRequest todoRequest);
         TodoModelView PutTodo(UserModelView currentUser, TodoRequest todoRequest);
         TodoModelView AssignTodo(UserModelView currentUser, TodoAssign todoAssign);
+        void ChangeIsRead(UserModelView currentUser, int id);
         void ArchiveTodo(UserModelView currentUser, int id);
     }
 }
