@@ -76,7 +76,7 @@ namespace TodoApp.Core.Managers
         {
             _tododbContext.IgnoreIsRead = true;
 
-            var isRead = _tododbContext.Todos.Where(a => a.IsRead == true);
+            var isRead = _tododbContext.Todos.Where(a => a.IsRead);
             var queryRes = isRead.Where(a => string.IsNullOrWhiteSpace(searchText)
                                                     || (a.Title.Contains(searchText)
                                                         || a.Content.Contains(searchText)));
