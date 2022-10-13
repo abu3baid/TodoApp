@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TodoApp.Common.Extceptions;
 using TodoApp.Common.Extensions;
